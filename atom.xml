@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Hanser14Forever.github.io</id>
     <title>Gridea</title>
-    <updated>2023-07-03T01:53:24.381Z</updated>
+    <updated>2023-07-03T08:18:27.076Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Hanser14Forever.github.io"/>
     <link rel="self" href="https://Hanser14Forever.github.io/atom.xml"/>
@@ -10,6 +10,229 @@
     <logo>https://Hanser14Forever.github.io/images/avatar.png</logo>
     <icon>https://Hanser14Forever.github.io/favicon.ico</icon>
     <rights>All rights reserved 2023, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[力扣LeetCode——每日一题]]></title>
+        <id>https://Hanser14Forever.github.io/post/li-kou-leetcode-mei-ri-yi-ti/</id>
+        <link href="https://Hanser14Forever.github.io/post/li-kou-leetcode-mei-ri-yi-ti/">
+        </link>
+        <updated>2023-07-03T08:16:31.000Z</updated>
+        <content type="html"><![CDATA[<p>👇力扣每天打卡，记录每天学到的东西<br>
+👮争取一天不漏，做小孩大人都能看懂的笔记</p>
+<h1 id="71">7.1</h1>
+<p><a href="https://leetcode.cn/problems/two-sum/">1.两数之和</a></p>
+<p>标签：哈希表</p>
+<p>思路：创建哈希表，对每个x，先查询表中是否存在target-x，没有则将x插入到哈希表中。</p>
+<p>时间复杂度：O(N)</p>
+<p>空间复杂度：O(N)</p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def twoSum(self, nums: List[int], target: int) -&gt; List[int]:
+        ht = dict()
+        for i in range(len(nums)):
+            if target-nums[i] in ht.keys():
+                return [ht[target-nums[i]], i]
+            ht[nums[i]] = i
+</code></pre>
+<ul>
+<li>Python中哈希表：用字典<code>dict()</code>实现</li>
+</ul>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        unordered_map&lt;int, int&gt; ht;
+        for(int i=0; i&lt;nums.size(); ++i){
+            auto it = ht.find(target-nums[i]);
+            if(it!=ht.end()){
+                return {it-&gt;second, i};
+            }
+            ht[nums[i]] = i;
+        }
+        return {};
+    }
+};
+</code></pre>
+<ul>
+<li>C++中哈希表：用<code>unordered_map&lt;type, type&gt;</code>实现
+<ul>
+<li><code>ele-&gt;first</code>指代键；<code>ele-&gt;second</code>指代值</li>
+</ul>
+</li>
+<li>C++中在哈希表中寻找元素：
+<ul>
+<li>先创建一个迭代器：<code>auto it = hashtable.find(ele)</code></li>
+<li>表中包含该元素：<code>it!=hashtable.end()</code></li>
+</ul>
+</li>
+<li>C++中返回列表：用<code>{}</code>，与Python区别开</li>
+</ul>
+<h2 id="72">7.2</h2>
+<p><a href="https://leetcode.cn/problems/add-two-numbers/">2.两数相加</a></p>
+<p>标签：链表</p>
+<p>思路：模拟，设置好进位，考虑好最后一个节点</p>
+<p>时间复杂度：O(max(m,n))</p>
+<p>空间复杂度：O(1)</p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -&gt; Optional[ListNode]:
+        dummy = ListNode()
+        carry, curr = 0, dummy
+        while l1 or l2 or carry:
+            s = (l1.val if l1 else 0) + (l2.val if l2 else 0) + carry
+            carry = s // 10
+            s %= 10
+            curr.next = ListNode(s)
+            curr = curr.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+        return dummy.next
+</code></pre>
+<ul>
+<li>Python中新建空链表：<code>l = ListNode()</code></li>
+<li>Python中新建值为val的链表：<code>l = ListNode(val)</code></li>
+<li>Python中，变量当满足条件cond时赋值a，否则赋值b：<code>v = a if cond else b</code></li>
+</ul>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode();
+        int carry = 0;
+        ListNode* curr = dummy;
+        while(l1 || l2 || carry){
+            int s = (l1 ? l1-&gt;val : 0) + (l2 ? l2-&gt;val : 0) + carry;
+            carry = s / 10;
+            curr-&gt;next = new ListNode(s % 10);
+            curr = curr-&gt;next;
+
+            l1 = l1 ? l1-&gt;next : nullptr;
+            l2 = l2 ? l2-&gt;next : nullptr;
+        } 
+        return dummy-&gt;next;
+    }
+};
+</code></pre>
+<ul>
+<li>C++中新建空链表：<code>ListNode* l = new ListNode()</code></li>
+<li>C++中新建值为val的链表：<code>ListNode* l = new ListNode(val)</code></li>
+<li>C++中，变量当满足条件cond时赋值a，否则赋值b：<code>v = cond ? a : b</code></li>
+</ul>
+<h2 id="73">7.3</h2>
+<p><a href="https://leetcode.cn/problems/add-two-numbers-ii">445.两数相加II</a></p>
+<p>标签：链表，栈</p>
+<p>思路：将两链表的值压入栈中，依次取出相加</p>
+<p>时间复杂度：O(max(m,n))</p>
+<p>空间复杂度：O(m+n)</p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -&gt; Optional[ListNode]:
+        s1, s2 = [], []
+        while l1:
+            s1.append(l1.val)
+            l1 = l1.next
+        while l2:
+            s2.append(l2.val)
+            l2 = l2.next
+        
+        head, carry = None, 0
+        while s1 or s2 or carry:
+            s = (s1.pop() if s1 else 0) + (s2.pop() if s2 else 0) + carry
+            carry = s // 10
+            curnode = ListNode(s%10)
+            curnode.next = head
+            head = curnode
+        
+        return head
+</code></pre>
+<ul>
+<li>
+<p>Python中栈：由列表<code>list()</code>实现</p>
+<ul>
+<li>
+<p>栈的push：<code>l.append(ele)</code></p>
+</li>
+<li>
+<p>栈的pop：<code>l.pop()</code></p>
+</li>
+<li>
+<p>栈顶元素：<code>l[-1]</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>板子</strong>：Python链表中，每次新加节点到表头，实现方法：</p>
+<pre><code class="language-python">head = None
+while cond:
+    curnode = ListNode(val)
+    curnode.next = head
+    head = curnode
+</code></pre>
+</li>
+</ul>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        stack&lt;int&gt; s1, s2;
+        while (l1) {
+            s1.push(l1-&gt;val);
+            l1 = l1-&gt;next;
+        }
+        while (l2) {
+            s2.push(l2-&gt;val);
+            l2 = l2-&gt;next;
+        }
+
+        int carry = 0;
+        ListNode* head = nullptr;
+        while (!s1.empty() || !s2.empty() || carry) {
+            int s = (!s1.empty() ? s1.top() : 0) + (!s2.empty() ? s2.top() : 0) + carry;
+            if (!s1.empty()) s1.pop();
+            if (!s2.empty()) s2.pop();
+            carry = s / 10;
+            ListNode* curnode = new ListNode(s%10);
+            curnode-&gt;next = head;
+            head = curnode;
+        }
+        return head;
+    }
+};
+
+</code></pre>
+<ul>
+<li>
+<p>C++中栈的实现：<code>stack&lt;int&gt; s</code></p>
+<ul>
+<li>
+<p>栈的push：<code>s.push(ele)</code></p>
+</li>
+<li>
+<p>栈的pop：<code>s.pop()</code></p>
+</li>
+<li>
+<p>栈顶元素：<code>s.top()</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>板子</strong>：C++链表中，每次新加节点到表头，实现方法：</p>
+<pre><code class="language-C++">ListNode* head = nullptr;
+while (cond) {
+	ListNode* curnode = new ListNode(val);
+    curnode-&gt;next = head;
+    head = curnode;
+}
+</code></pre>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Pycharm日记——git push时出现Failed to connect to github.com port 443: Timed out]]></title>
         <id>https://Hanser14Forever.github.io/post/Pycharm-bi-ji-1/</id>
