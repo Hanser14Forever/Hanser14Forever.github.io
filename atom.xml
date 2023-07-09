@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Hanser14Forever.github.io</id>
     <title>Gridea</title>
-    <updated>2023-07-03T08:21:22.759Z</updated>
+    <updated>2023-07-09T09:21:13.944Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Hanser14Forever.github.io"/>
     <link rel="self" href="https://Hanser14Forever.github.io/atom.xml"/>
@@ -10,6 +10,16 @@
     <logo>https://Hanser14Forever.github.io/images/avatar.png</logo>
     <icon>https://Hanser14Forever.github.io/favicon.ico</icon>
     <rights>All rights reserved 2023, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Pycharm日记——git clone时出现OpenSSL SSL_read: Connection was reset, errno 10054]]></title>
+        <id>https://Hanser14Forever.github.io/post/pycharm-ri-ji-git-clone-shi-chu-xian-openssl-ssl_read-connection-was-reset-errno-10054/</id>
+        <link href="https://Hanser14Forever.github.io/post/pycharm-ri-ji-git-clone-shi-chu-xian-openssl-ssl_read-connection-was-reset-errno-10054/">
+        </link>
+        <updated>2023-07-04T17:13:05.000Z</updated>
+        <content type="html"><![CDATA[<p>👇</p>
+<p>在clone的文件夹内运行<code>git bash here</code>，输入<code>git config --global http.sslVerify &quot;false&quot;</code>即可</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[力扣LeetCode——每日一题]]></title>
         <id>https://Hanser14Forever.github.io/post/li-kou-leetcode-mei-ri-yi-ti/</id>
@@ -68,7 +78,7 @@ public:
 </li>
 <li>C++中返回列表：用<code>{}</code>，与Python区别开</li>
 </ul>
-<h2 id="72">7.2</h2>
+<h1 id="72">7.2</h1>
 <p><a href="https://leetcode.cn/problems/add-two-numbers/">2.两数相加</a></p>
 <p>标签：链表</p>
 <p>思路：模拟，设置好进位，考虑好最后一个节点</p>
@@ -121,7 +131,7 @@ public:
 <li>C++中新建值为val的链表：<code>ListNode* l = new ListNode(val)</code></li>
 <li>C++中，变量当满足条件cond时赋值a，否则赋值b：<code>v = cond ? a : b</code></li>
 </ul>
-<h2 id="73">7.3</h2>
+<h1 id="73">7.3</h1>
 <p><a href="https://leetcode.cn/problems/add-two-numbers-ii">445.两数相加II</a></p>
 <p>标签：链表，栈</p>
 <p>思路：将两链表的值压入栈中，依次取出相加</p>
@@ -231,12 +241,499 @@ while (cond) {
 </code></pre>
 </li>
 </ul>
+<h1 id="74">7.4</h1>
+<p><a href="https://leetcode.cn/problems/sum-in-a-matrix/">2679.矩阵中的和</a></p>
+<p>标签：矩阵，堆，优先队列</p>
+<p>思路：直接每行排序，每列取最大即可；下面用到利用最大堆的方法，对每行建立一个最大堆，每次pop出每行的最大元素，求最大值相加即可</p>
+<p>时间复杂度：O(mnlogn)（优先队列中每次压入或者弹出元素需要的时间复杂度为O(logn)）</p>
+<p>空间复杂度：O(mn)</p>
+<hr>
+<p><strong>知识</strong>：堆，即优先队列，满足以下性质：</p>
+<ul>
+<li>任意节点小于（或大于）它的所有后裔，最小元（或最大元）在堆的根上（<strong>堆序性</strong>）。</li>
+<li>堆总是一棵<a href="https://zh.wikipedia.org/wiki/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91">完全树</a>。即除了最底层，其他层的节点都被元素填满，且最底层尽可能地从左到右填入。</li>
+</ul>
+<img src="C:\Users\asus\Documents\Gridea\post-images\17856624-11acd3cf5c6f6e1b.webp" style="zoom: 33%;" />
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def matrixSum(self, nums: List[List[int]]) -&gt; int:
+        res = 0
+        m, n = len(nums), len(nums[0])
+        pq = []
+        for i in range(m):
+            pq.append([])
+            for j in range(n):
+                heapq.heappush(pq[i], -nums[i][j])
+        for j in range(n):
+            maxVal = 0
+            for i in range(m):
+                maxVal = max(maxVal, -heapq.heappop(pq[i]))
+            res += maxVal
+        return res
+</code></pre>
+<ul>
+<li>Python中新建堆（默认最小堆，最大堆将元素取负）：<code>heap = heapq.heapify(list)</code></li>
+<li>Python中堆的push：<code>heapq.heappush(heap, ele)</code></li>
+<li>Python中堆的pop：<code>heapq.heappop(heap)</code></li>
+</ul>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    int matrixSum(vector&lt;vector&lt;int&gt;&gt;&amp; nums) {
+        int res = 0;
+        int m = nums.size();
+        int n = nums[0].size();
+        vector&lt;priority_queue&lt;int&gt;&gt; pq(m);
+        for(int i = 0; i &lt; m; ++i){
+            for(int j = 0; j &lt; n; ++j){
+                pq[i].emplace(nums[i][j]);
+            }
+        }
+        for(int j = 0; j &lt; n; ++j){
+            int maxVal = 0;
+            for(int i = 0; i &lt; m; ++i){
+                maxVal = max(maxVal, pq[i].top());
+                pq[i].pop();
+            }
+            res += maxVal;
+        }
+        return res;
+    }
+};
+</code></pre>
+<ul>
+<li>C++中新建堆（默认最大堆）：<code>priority_queue&lt;int&gt; q</code></li>
+<li>C++中新建最小堆：<code>priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt;&gt; q</code></li>
+<li>C++中堆的push：<code>q.emplace(ele)</code></li>
+<li>C++中堆的pop：<code>q.pop()</code></li>
+<li>C++中堆顶元素：<code>q.top()</code></li>
+</ul>
+<h1 id="75">7.5</h1>
+<p><a href="https://leetcode.cn/problems/k-items-with-the-maximum-sum/">2600.K件物品的最大值</a>（简单）</p>
+<p>标签：贪心</p>
+<p>思路：最简单的贪心，保证前k个均为最大即可</p>
+<p>时间复杂度：O(1)</p>
+<p>空间复杂度：O(1)</p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def kItemsWithMaximumSum(self, numOnes: int, numZeros: int, numNegOnes: int, k: int) -&gt; int:
+        if k &gt; numOnes + numZeros:
+            return numOnes - (k - numOnes - numZeros)
+        else:
+            return min(numOnes, k)
+</code></pre>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
+        if(k &gt; numOnes + numZeros){
+            return numOnes - (k - numOnes - numZeros);
+        }else{
+            return min(numOnes, k);
+        }
+    }
+};
+</code></pre>
+<h1 id="76">7.6</h1>
+<p><a href="https://leetcode.cn/problems/maximum-split-of-positive-even-integers/">2178.拆分成最多数目的正偶数之和</a></p>
+<p>标签：贪心，数学</p>
+<p>思路：贪心从最小的偶数开始枚举，若该偶数不超过当前目标所剩值的一半，则加入当前列表</p>
+<p>时间复杂度：O(<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msqrt><mi>n</mi></msqrt></mrow><annotation encoding="application/x-tex">\sqrt n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.23972em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8002800000000001em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathdefault" style="padding-left:0.833em;">n</span></span><span style="top:-2.76028em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,
+-10,-9.5,-14c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54c44.2,-33.3,65.8,
+-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10s173,378,173,378c0.7,0,
+35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429c69,-144,104.5,-217.7,106.5,
+-221c5.3,-9.3,12,-14,20,-14H400000v40H845.2724s-225.272,467,-225.272,467
+s-235,486,-235,486c-2.7,4.7,-9,7,-19,7c-6,0,-10,-1,-12,-3s-194,-422,-194,-422
+s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.23972em;"><span></span></span></span></span></span></span></span></span>)</p>
+<p>空间复杂度：O(n)</p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def maximumEvenSplit(self, finalSum: int) -&gt; List[int]:
+        if finalSum % 2:
+            return []
+
+        ans = []
+        for i in range(2,finalSum+1,2):
+            if 2*i &gt;= finalSum:
+                break
+            ans.append(i)
+            finalSum-=i
+        ans.append(finalSum)
+        return ans
+</code></pre>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    vector&lt;long long&gt; maximumEvenSplit(long long finalSum) {
+        if(finalSum % 2){
+            return {};
+        }
+
+        vector&lt;long long&gt; ans;
+        for(int i = 2; i&lt;=finalSum; i = i + 2){
+            if(2*i &gt;= finalSum) break;
+            ans.push_back(i);
+            finalSum-=i;
+        }
+        ans.push_back(finalSum);
+        return ans;
+    }
+};
+</code></pre>
+<h1 id="77">7.7</h1>
+<p><a href="https://leetcode.cn/problems/time-to-cross-a-bridge/">2532.过桥的时间</a>（困难）</p>
+<p>标签：模拟，堆（优先队列）</p>
+<p>思路：</p>
+<p>​	用四个优先队列模拟工人的状态：</p>
+<ul>
+<li>
+<p><code>wait_in_left</code>：大根堆，存储当前在左岸等待的工人的下标</p>
+</li>
+<li>
+<p><code>wait_in_right</code>：大根堆，存储当前在右岸等待的工人的下标</p>
+</li>
+<li>
+<p><code>work_in_left</code>：小根堆，存储当前在左岸工作的工人放好箱子的时间以及工人的下标</p>
+</li>
+<li>
+<p><code>work_in_right</code>：小根堆，存储当前在右岸工作的工人放好箱子的时间以及工人的下标</p>
+<p>先把工人按效率从高到低排序，之后模拟过程：</p>
+</li>
+<li>
+<p>初始时，所有工人在左岸，<code>wait_in_left</code>存储所有工人下标，记录当前时间</p>
+</li>
+<li>
+<p>先判断<code>work_in_left</code>和<code>work_in_right</code>中是否有工人已经放好箱子，如果有，放入wait堆中，并从work堆中移除</p>
+</li>
+<li>
+<p>再判断当前是否有工人在左、右岸等待，分别用<code>left_to_go</code>和<code>right_to_go</code>记录。</p>
+<ul>
+<li>如果均为<code>False</code>，即没有等待的工人，直接将时间更新为下一个工人放好箱子的时间</li>
+<li>如果<code>right_to_go</code>为<code>True</code>，则从<code>wait_in_right</code>中取出工人，更新时间为加上该工人过岸的时间。再判断：如果所有工人都不在右岸，则直接返回当前时间；否则，将当前工人加入到<code>work_in_left</code>中</li>
+<li>如果<code>left_to_go</code>为True，则从<code>wait_in_left</code>中取出工人，更新时间为加上该工人过岸的时间。将箱子数量减一，将当前工人加入到<code>work_in_right</code>中</li>
+</ul>
+</li>
+</ul>
+<p>时间复杂度：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n \log k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></p>
+<p>空间复杂度：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def findCrossingTime(self, n: int, k: int, time: List[List[int]]) -&gt; int:
+        time.sort(key = lambda x: x[0] + x[2])
+
+        cur = 0
+        wait_in_left, wait_in_right = [], []
+        work_in_left, work_in_right = [], []
+        for i in range(k):
+            heappush(wait_in_left, -i)
+
+        while 1:
+            while work_in_left:
+                t, i = work_in_left[0]
+                if t &gt; cur:
+                    break
+                heappop(work_in_left)
+                heappush(wait_in_left, -i)
+            while work_in_right:
+                t, i = work_in_right[0]
+                if t &gt; cur:
+                    break
+                heappop(work_in_right)
+                heappush(wait_in_right, -i) 
+            left_to_go = n &gt; 0 and wait_in_left
+            right_to_go = bool(wait_in_right)
+            if not left_to_go and not right_to_go:
+                nxt = inf
+                if work_in_left:
+                    nxt = min(nxt, work_in_left[0][0])
+                if work_in_right:
+                    nxt = min(nxt, work_in_right[0][0])
+                cur = nxt
+            elif right_to_go:
+                i = -heappop(wait_in_right)
+                cur += time[i][2]
+                if n == 0 and not wait_in_right and not work_in_right:
+                    return cur
+                heappush(work_in_left, (cur + time[i][3], i))
+            elif left_to_go:
+                i = -heappop(wait_in_left)
+                cur += time[i][0]
+                n -= 1
+                heappush(work_in_right, (cur + time[i][1], i))
+</code></pre>
+<ul>
+<li>
+<p><code>heappush</code>等函数前的<code>heapq</code>可省略</p>
+</li>
+<li>
+<p>Python中按键排序数组：<code>list.sort(key = lambda x: x[0])</code></p>
+</li>
+</ul>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    int findCrossingTime(int n, int k, vector&lt;vector&lt;int&gt;&gt;&amp; time) {
+        using pii = pair&lt;int, int&gt;;
+        for(int i = 0; i &lt; k; ++i){
+            time[i].push_back(i);
+        }
+        sort(time.begin(), time.end(),  [](auto&amp; a, auto&amp; b){
+            int x = a[0] + a[2];
+            int y = b[0] + b[2];
+            return x == y ? a[4] &lt; b[4] : x &lt; y;
+        });
+        int cur = 0;
+        priority_queue&lt;int&gt; wait_in_left, wait_in_right;
+        priority_queue&lt;pii, vector&lt;pii&gt;, greater&lt;pii&gt;&gt; work_in_left, work_in_right;
+        for(int i = 0; i &lt; k; ++i){
+            wait_in_left.push(i);
+        }
+        while(true){
+            while(!work_in_left.empty()){
+                auto [t, i] = work_in_left.top();
+                if(t &gt; cur){
+                    break;
+                }
+                work_in_left.pop();
+                wait_in_left.push(i);
+            }
+            while(!work_in_right.empty()){
+                auto [t, i] = work_in_right.top();
+                if(t &gt; cur){
+                    break;
+                }
+                work_in_right.pop();
+                wait_in_right.push(i);
+            }
+            bool left_to_go = n &gt; 0 &amp;&amp; !wait_in_left.empty();
+            bool right_to_go = !wait_in_right.empty();
+            if(!left_to_go &amp;&amp; !right_to_go){
+                int nxt = 1 &lt;&lt; 30;
+                if(!work_in_left.empty()){
+                    nxt = min(nxt, work_in_left.top().first);
+                }
+                if(!work_in_right.empty()){
+                    nxt = min(nxt, work_in_right.top().first);
+                }
+                cur = nxt;
+            }else if(right_to_go){
+                int i = wait_in_right.top();
+                wait_in_right.pop();
+                cur += time[i][2];
+                if(n == 0 &amp;&amp; wait_in_right.empty() &amp;&amp; work_in_right.empty()){
+                    return cur;
+                }
+                work_in_left.push({cur + time[i][3], i});
+            }else if(left_to_go){
+                int i = wait_in_left.top();
+                wait_in_left.pop();
+                cur += time[i][0];
+                --n;
+                work_in_right.push({cur + time[i][1], i});
+            }
+        }
+    }
+};
+</code></pre>
+<ul>
+<li>
+<p>C++中排序+lambda匿名表达式：</p>
+<pre><code class="language-c++">sort(list.begin(), list.end(), [](auto&amp; a, auto&amp; b){
+	return a[0] &lt; b[0]
+});
+</code></pre>
+<p>这里<code>auto&amp;</code>带引用表示数组</p>
+</li>
+<li>
+<p>C++中对元组（pair）构建优先队列：</p>
+<pre><code class="language-c++">using pii = pair&lt;int, int&gt;;
+priority_queue&lt;pii, vector&lt;pii&gt;, greater&lt;pii&gt;&gt; work_in_left, work_in_right;
+</code></pre>
+</li>
+</ul>
+<h1 id="78">7.8</h1>
+<p><a href="https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/">167.两数之和 II - 输入有序数组</a></p>
+<p>标签：数组，双指针，二分查找</p>
+<p>思路：可以用哈希做，但忽略了数组有序性质。若利用有序性质，有二分查找和双指针两种方法</p>
+<p>时间复杂度：</p>
+<ul>
+<li>二分查找：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></li>
+<li>双指针：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<p>空间复杂度：</p>
+<ul>
+<li>二分查找：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></li>
+<li>双指针：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<hr>
+<p>二分查找：</p>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def twoSum(self, numbers: List[int], target: int) -&gt; List[int]:
+        n = len(numbers)
+
+        for i in range(n):
+            low, high = i+1, n-1
+            while low &lt;= high:
+                mid = low + (high - low) // 2
+                if numbers[mid] + numbers[i] == target:
+                    return [i+1, mid+1]
+                elif numbers[mid] + numbers[i] &lt; target:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+</code></pre>
+<ul>
+<li>
+<p><strong>板子</strong>：Python中二分查找：</p>
+<pre><code class="language-python">while low &lt;= high:
+    mid = low + (high - low) // 2
+  if list[mid] == target:
+        return mid
+    elif list[mid] &lt; target:
+        low = mid + 1
+    else:
+    	high = mid - 1
+</code></pre>
+</li>
+</ul>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; numbers, int target) {
+        int n = numbers.size();
+
+        for(int i = 0; i &lt; n; ++i){
+            int low = i + 1;
+            int high =  n - 1;
+            while(low &lt;= high){
+                int mid = low + (high - low) / 2;
+                if(numbers[mid] + numbers[i] == target) return {i + 1, mid + 1};
+                else if(numbers[mid] + numbers[i] &lt; target) low = mid + 1;
+                else high = mid - 1;
+            }
+        }
+        return {};
+    }
+};
+</code></pre>
+<ul>
+<li>
+<p><strong>板子</strong>：C++中二分查找：</p>
+<pre><code class="language-c++">while(low &lt;= high){
+    int mid = low + (high - low) / 2;
+    if(list[mid] == target) return mid;
+	else if(list[mid] &lt; target) low = mid + 1;
+    else high = mid - 1
+}
+</code></pre>
+</li>
+</ul>
+<hr>
+<p>双指针：<strong>有序数组双指针缩小范围，必能找到目标</strong></p>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def twoSum(self, numbers: List[int], target: int) -&gt; List[int]:
+        low, high = 0, len(numbers) - 1
+        while low &lt; high:
+            total = numbers[low] + numbers[high]
+            if total == target:
+                return [low + 1, high + 1]
+            elif total &lt; target:
+                low += 1
+            else:
+                high -= 1
+        return [-1, -1]
+</code></pre>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; numbers, int target) {
+        int low = 0, high = numbers.size() - 1;
+        while (low &lt; high) {
+            int sum = numbers[low] + numbers[high];
+            if (sum == target) {
+                return {low + 1, high + 1};
+            } else if (sum &lt; target) {
+                ++low;
+            } else {
+                --high;
+            }
+        }
+        return {-1, -1};
+    }
+};
+</code></pre>
+<h1 id="79">7.9</h1>
+<p><a href="https://leetcode.cn/problems/3sum/">15.三数之和</a></p>
+<p>标签：数组，双指针</p>
+<p>思路：固定第一个数，双指针寻找后两个数。重点在于跳过重复解</p>
+<p>时间复杂度：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+<p>空间复杂度：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></p>
+<hr>
+<p>Python</p>
+<pre><code class="language-python">class Solution:
+    def threeSum(self, nums: List[int]) -&gt; List[List[int]]:
+        ans = []
+        nums.sort()
+        for i in range(len(nums)-2):
+            left, right = i+1, len(nums)-1
+            while left &lt; right:
+                if nums[left] + nums[right] + nums[i] &lt; 0:
+                    left += 1
+                elif nums[left] + nums[right] + nums[i] &gt; 0:
+                    right -= 1
+                else:
+                    res = [nums[i], nums[left], nums[right]]
+                    if res not in ans:
+                        ans.append(res)
+                        
+                    break
+        return ans
+</code></pre>
+<hr>
+<p>C++</p>
+<pre><code class="language-c++">class Solution {
+public:
+    vector&lt;vector&lt;int&gt;&gt; threeSum(vector&lt;int&gt;&amp; nums) {
+        vector&lt;vector&lt;int&gt;&gt; ans;
+        sort(nums.begin(), nums.end());
+        for(int i = 0; i &lt; nums.size(); ++i){
+            if(nums[i]&gt;0) return ans;
+            if(i &gt; 0 and nums[i] == nums[i-1]) continue;
+            int left = i+1;
+            int right = nums.size()-1;
+            while(left &lt; right){
+                if(nums[i] + nums[left] + nums[right] &gt; 0) right--;
+                else if(nums[i] + nums[left] + nums[right] &lt; 0) left++;
+                else{
+                    vector&lt;int&gt; res = {nums[i], nums[left], nums[right]};
+                    ans.push_back(res);
+                    while(left &lt; right and nums[left] == nums[left+1]) left++;
+                    while(left &lt; right and nums[right] == nums[right-1]) right--;
+                    left++;
+                    right--;
+                }
+            }
+        }
+        return ans;
+    }
+};
+</code></pre>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Pycharm日记——git push时出现Failed to connect to github.com port 443: Timed out]]></title>
-        <id>https://Hanser14Forever.github.io/post/Pycharm-bi-ji-1/</id>
-        <link href="https://Hanser14Forever.github.io/post/Pycharm-bi-ji-1/">
+        <id>https://Hanser14Forever.github.io/post/Pycharm-ri-ji-git-push-shi-chu-xian-Failed-to-connect-to-github-com-port-443-Timed-out/</id>
+        <link href="https://Hanser14Forever.github.io/post/Pycharm-ri-ji-git-push-shi-chu-xian-Failed-to-connect-to-github-com-port-443-Timed-out/">
         </link>
         <updated>2023-06-28T04:13:33.000Z</updated>
         <content type="html"><![CDATA[<p>👇</p>
