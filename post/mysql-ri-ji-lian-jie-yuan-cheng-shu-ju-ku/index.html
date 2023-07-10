@@ -2,24 +2,18 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | Gridea</title>
+<title>Mysql日记——连接远程数据库 | Gridea</title>
 <link rel="shortcut icon" href="https://Hanser14Forever.github.io/favicon.ico?v=1689005310015">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://Hanser14Forever.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | Gridea - Atom Feed" href="https://Hanser14Forever.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Mysql日记——连接远程数据库 | Gridea - Atom Feed" href="https://Hanser14Forever.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
-
-🏠 关于本站
-👨‍💻 博主是谁
-⛹ 兴趣爱好
-📬 联系我呀
-Key：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
-..." />
+    <meta name="description" content="配置Mysql允许远程连接：
+在localhost登入mysql后，更改 “mysql” 数据库里的 “user” 表里的 “host” 项，将&quot;localhost&quot;改称&quot;%&quot;
+update user..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
@@ -82,11 +76,11 @@ Key：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
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              Mysql日记——连接远程数据库
             </h2>
             <div class="post-info">
               <span>
-                2019-01-25
+                2023-07-09
               </span>
               <span>
                 1 min read
@@ -96,26 +90,26 @@ Key：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
             
             <div class="post-content-wrapper">
               <div class="post-content" v-pre>
-                <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>Key：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</p>
+                <h1 id="配置mysql允许远程连接">配置Mysql允许远程连接：</h1>
+<p>在localhost登入mysql后，更改 “mysql” 数据库里的 “user” 表里的 “host” 项，将&quot;localhost&quot;改称&quot;%&quot;</p>
+<pre><code class="language-mysql">update user set host = '%' where user = 'root';
+
+select host, user from user;
+</code></pre>
+<p>或者使用授权法，如果想myuser使用mypassword（密码）从任何主机连接到mysql服务器的话：</p>
+<pre><code class="language-mysql">mysql&gt;GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'192.168.1.3' IDENTIFIED BY *** WITH GRANT OPTION;
+
+mysql&gt;FLUSH PRIVILEGES;
+</code></pre>
+<h1 id="连接远程数据库">连接远程数据库</h1>
+<pre><code class="language-mysql">mysql -h192.168.5.116 -P3306 -uroot -p123456
+</code></pre>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99">🏠 关于本站</a></li>
-<li><a href="#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81">👨‍💻 博主是谁</a></li>
-<li><a href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD">⛹ 兴趣爱好</a></li>
-<li><a href="#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80">📬 联系我呀</a></li>
-</ul>
-</li>
+<li><a href="#%E9%85%8D%E7%BD%AEmysql%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5">配置Mysql允许远程连接：</a></li>
+<li><a href="#%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%95%B0%E6%8D%AE%E5%BA%93">连接远程数据库</a></li>
 </ul>
 
               </div>
@@ -123,6 +117,15 @@ Key：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
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hanser14Forever.github.io/post/pycharm-ri-ji-git-clone-shi-chu-xian-openssl-ssl_read-connection-was-reset-errno-10054/">
+              <h3 class="post-title">
+                Pycharm日记——git clone时出现OpenSSL SSL_read: Connection was reset, errno 10054
+              </h3>
+            </a>
+          </div>
         
 
         
